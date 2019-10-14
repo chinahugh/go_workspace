@@ -8,3 +8,9 @@ _obj
 *.di
 *.callgrind
 .DS_Store
+
+go_git
+*.iml
+*.ipr
+*.iws
+*.zip
