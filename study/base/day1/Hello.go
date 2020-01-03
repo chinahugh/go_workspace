@@ -1,8 +1,8 @@
 package main
 
 import (
+	"base/day1/mypkg"
 	"fmt"
-	"mypkg"
 )
 
 func main() {

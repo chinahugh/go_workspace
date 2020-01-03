@@ -1,17 +1,18 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 )
 
-// 定义一个 DivideError 结构
+// DivideError 定义一个 DivideError 结构
 type DivideError struct {
 	dividee int
 	divider int
 }
 
 // 实现 `error` 接口
-func (de *DivideError) Error() string {
+func (de *DivideError) aa() string {
 	strFormat := `
     Cannot proceed, the divider is zero.
     dividee: %d
@@ -21,25 +22,31 @@ func (de *DivideError) Error() string {
 }
 
 // Divide 定义 `int` 类型除法运算的函数
-func Divide(varDividee int, varDivider int) (result int, errorMsg string) {
+func Divide(varDividee int, varDivider int) (int, string) {
 	if varDivider == 0 {
-		dData := DivideError{
+		var dData DivideError = DivideError{
 			dividee: varDividee,
 			divider: varDivider,
 		}
 
-		return 0, dData.Error()
+		return 0, dData.aa()
 	} else {
 		return varDividee / varDivider, ""
 	}
 
 }
 
+//第二种
+func defaults() (int, error) {
+	return 1, errors.New("asdasd")
+}
+
 func main() {
+	//第一种
 
 	// 正常情况
-	if result, errorMsg := Divide(100, 0); errorMsg == "" {
-		fmt.Println("100/0 = ", result)
+	if result, errorMsg := Divide(100, 10); errorMsg == "" {
+		fmt.Println("100/10 = ", result)
 	} else {
 		fmt.Println("errorMsg is: ", errorMsg)
 	}
@@ -48,4 +55,8 @@ func main() {
 		fmt.Println("errorMsg is: ", errorMsg)
 	}
 
+	//第二种
+	a, e := defaults()
+	fmt.Println(a)
+	fmt.Println(e)
 }

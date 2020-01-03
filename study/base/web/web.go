@@ -3,15 +3,18 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
+	"html/template"
 	"log"
 	"net/http"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
-log.Printf("hello %s %d \n","web",1)
+	log.Printf("hello %s %d \n", "web", 1)
 	fmt.Printf("Hello %s\n", "web test")
 	http.HandleFunc("/hello", hello)
+	http.HandleFunc("/login", login) //设置访问的路由
 	err := http.ListenAndServe(":9000", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
@@ -30,10 +33,10 @@ func hello(rp http.ResponseWriter, rq *http.Request) {
 	fmt.Println(closer)
 	fmt.Println(values)
 	i := Conn()
-	fmt.Fprint(rp, "hello web  ",i)
+	fmt.Fprint(rp, "hello web  ", i)
 }
 
-func Conn() int64{
+func Conn() int64 {
 	db, e := sql.Open("mysql", "root:root@/test?charset=utf8")
 	checkErr(e)
 
@@ -49,7 +52,7 @@ func Conn() int64{
 
 	fmt.Println(i)
 	db.Close()
-	return  i
+	return i
 }
 
 func checkErr(err error) {
@@ -61,4 +64,15 @@ func checkErr(err error) {
 func Aa(a int) int {
 	return 1
 }
-
+func login(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("method:", r.Method) //获取请求的方法
+	r.ParseForm()
+	if r.Method == "GET" {
+		t, _ := template.ParseFiles("login.gtpl")
+		t.Execute(w, nil)
+	} else {
+		//请求的是登陆数据，那么执行登陆的逻辑判断
+		fmt.Println("username:", r.Form["username"])
+		fmt.Println("password:", r.Form["password"])
+	}
+}

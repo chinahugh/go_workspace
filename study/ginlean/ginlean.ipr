@@ -462,4 +462,7 @@
   <component name="RTProjectComponent">
     <option name="nodeInterpreter" value="" />
   </component>
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/../.." vcs="Git" />
+  </component>
 </project>
